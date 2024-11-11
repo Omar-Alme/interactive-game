@@ -12,21 +12,34 @@
         <h1>Space Exploration Quest</h1>
         <button id="inventory-toggle-btn">Toggle Inventory</button>
     </header>
-    <div id="game-area">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="planet-info"></div>
-        <div id="user-actions">
-            <button id="explore-btn">Explore Planet</button>
-            <button id="pick-up-btn">Pick Up Item</button>
-            <button id="talk-alien-btn">Talk to Alien</button>
-            <button id="secret-place-btn">Visit Secret Place</button>
-            <button id="travel-next-btn">Travel to Next Planet</button>
-        </div>
-    </div>
+
+    <!-- Game Canvas -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Inventor -->
     <div id="inventory" class="hidden">
         <h2>Inventory</h2>
         <ul id="inventory-list"></ul>
     </div>
-    <div id="objects-container"></div>
+
+    <!-- Dialogue Overlay -->
+    <div id="dialogue-overlay" class="hidden">
+        <div id="dialogue-content">
+            <p id="dialogue-text"></p>
+            <button id="dialogue-close-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Overlay for Player Name -->
+    <div id="input-overlay" class="hidden">
+        <div id="input-content">
+            <p>Welcome Human, please tell us your name before going forward.</p>
+            <input type="text" id="player-name-input" placeholder="Enter your name" />
+            <button id="player-name-submit-btn">Submit</button>
+        </div>
+    </div>
+
+    <audio id="pickup-sound" src="/assets/media/sounds/pickup.mp3"></audio>
+    <audio id="travel-sound" src="/assets/media/sounds/travel.mp3"></audio>
 </body>
 </html>
