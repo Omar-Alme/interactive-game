@@ -1,3 +1,7 @@
+// script.js
+
+'use strict';
+
 const planets = [
     {
         name: "Planet A",
@@ -55,11 +59,24 @@ let currentPlanetIndex = parseInt(localStorage.getItem('currentPlanetIndex')) ||
 let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
 let playerName = localStorage.getItem('playerName') || "";
 
-const dialogueBox = document.getElementById("dialogue-box");
-const dialogueText = document.getElementById("dialogue-text");
-const dialogueCloseBtn = document.getElementById("dialogue-close-btn");
+// Canvas and Context
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-function main() {
+// Overlays
+const dialogueOverlay = document.getElementById('dialogue-overlay');
+const dialogueText = document.getElementById('dialogue-text');
+const dialogueCloseBtn = document.getElementById('dialogue-close-btn');
 
-}
+const inputOverlay = document.getElementById('input-overlay');
+const playerNameInput = document.getElementById('player-name-input');
+const playerNameSubmitBtn = document.getElementById('player-name-submit-btn');
 
+// Inventory Elements
+const inventoryPanel = document.getElementById('inventory');
+const inventoryList = document.getElementById('inventory-list');
+const inventoryToggleBtn = document.getElementById('inventory-toggle-btn');
+
+// Audio Elements
+const pickupSound = document.getElementById("pickup-sound");
+const travelSound = document.getElementById("travel-sound");
