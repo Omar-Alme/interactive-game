@@ -8,7 +8,25 @@
     <script defer src="/assets/js/script.js"></script>
 </head>
 <body>
-    <h1>Space Exploration Quest</h1>
-    <div id="game-area"></div>
+    <header>
+        <h1>Space Exploration Quest</h1>
+        <button id="inventory-toggle-btn">Toggle Inventory</button>
+    </header>
+    <div id="game-area">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="planet-info"></div>
+        <div id="user-actions">
+            <button id="explore-btn">Explore Planet</button>
+            <button id="pick-up-btn">Pick Up Item</button>
+            <button id="talk-alien-btn">Talk to Alien</button>
+            <button id="secret-place-btn">Visit Secret Place</button>
+            <button id="travel-next-btn">Travel to Next Planet</button>
+        </div>
+    </div>
+    <div id="inventory" class="hidden">
+        <h2>Inventory</h2>
+        <ul id="inventory-list"></ul>
+    </div>
+    <div id="objects-container"></div>
 </body>
 </html>
