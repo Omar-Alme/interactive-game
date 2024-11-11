@@ -1,9 +1,10 @@
-
 const planets = [
     {
         name: "Planet A",
         description: "Strange rock formations cover the landscape.",
-        items: ["Oxygen Tank"],
+        items: [
+            { name: "Oxygen Tank", image: "/assets/media/objects/oxygenTank.png" }
+        ],
         alien: "Zorg",
         secretPlace: "An eerie cave emitting strange noises.",
         backgroundImage: "/assets/media/Planets/planetA.png"
@@ -11,7 +12,9 @@ const planets = [
     {
         name: "Planet B",
         description: "Lush forests with glowing plants.",
-        items: ["Fuel"],
+        items: [
+            { name: "Fuel", image: "/assets/media/objects/fuel.png" }
+        ],
         alien: "Xylo",
         secretPlace: "A hidden waterfall that seems to whisper.",
         backgroundImage: "/assets/media/Planets/planetB.png"
@@ -19,7 +22,9 @@ const planets = [
     {
         name: "Planet C",
         description: "A vast desert with crystal sands.",
-        items: ["Space Map"],
+        items: [
+            { name: "Space Map", image: "/assets/media/objects/spaceMap.png" }
+        ],
         alien: "Quark",
         secretPlace: "An ancient ruin with mysterious symbols.",
         backgroundImage: "/assets/media/Planets/planetC.png"
@@ -27,7 +32,9 @@ const planets = [
     {
         name: "Planet D",
         description: "Ice-covered mountains touch the sky.",
-        items: ["Energy Crystal"],
+        items: [
+            { name: "Energy Crystal", image: "/assets/media/objects/energyCrystal.png" }
+        ],
         alien: "Frost",
         secretPlace: "A frozen lake that reflects other worlds.",
         backgroundImage: "/assets/media/Planets/planetD.png"
@@ -35,28 +42,24 @@ const planets = [
     {
         name: "Planet E",
         description: "Volcanic plains with rivers of lava.",
-        items: ["Heat Shield"],
+        items: [
+            { name: "Heat Shield", image: "/assets/media/objects/heatShield.png" }
+        ],
         alien: "Blaze",
         secretPlace: "A fiery cave with a pulsating glow.",
         backgroundImage: "/assets/media/Planets/planetE.png"
     }
 ];
 
+let currentPlanetIndex = parseInt(localStorage.getItem('currentPlanetIndex')) || -1;
+let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+let playerName = localStorage.getItem('playerName') || "";
+
+const dialogueBox = document.getElementById("dialogue-box");
+const dialogueText = document.getElementById("dialogue-text");
+const dialogueCloseBtn = document.getElementById("dialogue-close-btn");
 
 function main() {
-    askPlayerName();
+
 }
 
-function askPlayerName() {
-    playerName = prompt("Welcome Human, Please tell us your name before going forward.");
-    if (playerName) {
-        localStorage.setItem('playerName', playerName);
-    } else {
-        alert("Name is required to start the game.");
-        askPlayerName();
-    }
-}
-
-
-
-window.onload = main;
