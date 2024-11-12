@@ -92,9 +92,9 @@ function main(){
         showOverlay(inputOverlay);
         playerNameInput.focus();
     } else if (currentPlanetIndex === -1) {
-        showPlanetSelection();
+        // showPlanetSelection();
     } else {
-        alert('error')
+        renderInventory();
     }
 }
 
@@ -155,6 +155,7 @@ function submitPlayerName(){
 
 // -------------------------------------------SHOW PLANET CHOICES
 function showPlanetSelection(){
+
     const planetOptions = planets.map((planet, index) => `<option value="${index}">${planet.name}</option>`).join('');
 
 
@@ -168,5 +169,18 @@ function showPlanetSelection(){
         <button id="confirm-planet-btn">Confirm Selection</button>
     `;
     showOverlay(dialogueOverlay);
+    renderInventory();
 }
 
+// -------------------------------------------RENDER INVENTORY LIST
+function renderInventory(){
+    inventoryList.innerHTML = "";
+    if (inventory.length === 0) {
+        const li = document.createElement("li");
+        li.textContent = "No items in inventory.";
+        inventoryList.appendChild(li);
+        return;
+    }
+
+    
+}
