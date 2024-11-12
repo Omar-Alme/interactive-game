@@ -182,6 +182,7 @@ function showPlanetSelection(){
             currentPlanetIndex = selectedIndex;
             localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
             hideOverlay(dialogueOverlay);
+            renderPlanet();
         } else {
             alert("Please select a valid planet.");
         }
@@ -210,12 +211,32 @@ function renderPlanet(){
     }
 
     gameMain.style.backgroundImage = `url('${planet.backgroundImage}')`;
+
+    // Create planet description
+
+    // Create Items Section
+
+    // Click to pick up items
+
+    // Talk to alien button
+    talkToAlien();
+
+    // Add all elements to game area
 }
 
 
 // -------------------------------------------TALK TO ALEIN
 function talkToAlien(){
-
+    const planet = planets[currentPlanetIndex];
+    if (!planet || !planet.alien) {
+        dialogueText.innerHTML = `<p>There is no one to talk to here.</p>`;
+    } else {
+        dialogueText.innerHTML = `<p>You meet ${planet.alien}, who shares mysterious knowledge.</p>`;
+    }
+    showOverlay(dialogueOverlay);
 }
 
 // -------------------------------------------PICKUP ITEMS
+function pickUpItem(){
+
+}
