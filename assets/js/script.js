@@ -79,6 +79,8 @@ const inventoryToggleBtn = document.getElementById('inventory-toggle-btn');
 const pickupSound = document.getElementById("pickup-sound");
 const travelSound = document.getElementById("travel-sound");
 const jumpSound = document.getElementById("jump-sound");
+// Game Main
+const gameMain = document.getElementById('game-main');
 
 
 /**
@@ -95,6 +97,7 @@ function main(){
         // showPlanetSelection();
     } else {
         renderInventory();
+        renderPlanet();
     }
 }
 
@@ -170,6 +173,19 @@ function showPlanetSelection(){
     `;
     showOverlay(dialogueOverlay);
     renderInventory();
+
+    const confirmPlanetBtn = document.getElementById('confirm-planet-btn');
+    confirmPlanetBtn.addEventListener('click', () => {
+        const planetSelect = document.getElementById('planet-select');
+        const selectedIndex = parseInt(planetSelect.value);
+        if (!isNaN(selectedIndex)) {
+            currentPlanetIndex = selectedIndex;
+            localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
+            hideOverlay(dialogueOverlay);
+        } else {
+            alert("Please select a valid planet.");
+        }
+    }, { once: true });
 }
 
 // -------------------------------------------RENDER INVENTORY LIST
@@ -180,7 +196,26 @@ function renderInventory(){
         li.textContent = "No items in inventory.";
         inventoryList.appendChild(li);
         return;
+    } 
+}
+
+
+
+// -------------------------------------------RENDER PLANET 
+function renderPlanet(){
+    const planet = planets[currentPlanetIndex];
+    if (!planet) {
+        console.error("Invalid planet index.");
+        return;
     }
 
-    
+    gameMain.style.backgroundImage = `url('${planet.backgroundImage}')`;
 }
+
+
+// -------------------------------------------TALK TO ALEIN
+function talkToAlien(){
+
+}
+
+// -------------------------------------------PICKUP ITEMS

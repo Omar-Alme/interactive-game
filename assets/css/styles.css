@@ -44,6 +44,22 @@ header button:hover {
     background-color: #666;
 }
 
+/* GAME BOARD */
+#game-main {
+    margin-top: 60px; 
+    width: 100%;
+    height: calc(100vh - 60px);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: auto;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
 
 /* PLANET SELECTION */
 /* Planet Selection Dropdown */
