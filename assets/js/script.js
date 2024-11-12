@@ -136,7 +136,7 @@ function hideOverlay(overlay) {
 
 
 function submitPlayerName(){
-    const name = playerNameInput.ariaValueMax.trim();
+    const name = playerNameInput.value.trim();
     if(name !== ""){
         playerName = name;
         localStorage.setItem('playerName', playerName);
