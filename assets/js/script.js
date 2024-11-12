@@ -91,10 +91,14 @@ function main(){
     if (!playerName) {
         showOverlay(inputOverlay);
         playerNameInput.focus();
+    } else if (currentPlanetIndex === -1) {
+        showPlanetSelection();
+    } else {
+        alert('error')
     }
 }
 
-
+// -------------------------------------------EVENTSLISTENERS
 function initializeEventListeners(){
 
     // Close Dialogue
@@ -118,6 +122,7 @@ function initializeEventListeners(){
 
 }
 
+// -------------------------------------------TOGGLE
 
 function inventoryToggle(){
     // inventoryToggleBtn.classList.toggle('hidden');
@@ -125,22 +130,43 @@ function inventoryToggle(){
     inventoryPanel.classList.toggle('visible');
 }
 
+
+// -------------------------------------------OVERLAYS
 function showOverlay(overlay) {
     overlay.classList.add('visible');
 }
-
 function hideOverlay(overlay) {
     overlay.classList.remove('visible');
 }
 
 
-
+// -------------------------------------------SUBMIT PLAYERNAME
 function submitPlayerName(){
     const name = playerNameInput.value.trim();
     if(name !== ""){
         playerName = name;
         localStorage.setItem('playerName', playerName);
+        hideOverlay(inputOverlay);
+        showPlanetSelection();
     }else{
         alert("Please Enter a valid name to start")
     }
 }
+
+// -------------------------------------------SHOW PLANET CHOICES
+function showPlanetSelection(){
+    const planetOptions = planets.map((planet, index) => `<option value="${index}">${planet.name}</option>`).join('');
+
+
+    dialogueText.innerHTML = `
+    <p>hmmm What a weird human name...</p>
+    Anyways, Welcome to the outside ${playerName}! Please select a planet to explore first:</p>
+        <select id="planet-select">
+            ${planetOptions}
+        </select>
+        <br>
+        <button id="confirm-planet-btn">Confirm Selection</button>
+    `;
+    showOverlay(dialogueOverlay);
+}
+
