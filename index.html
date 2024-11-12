@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +12,11 @@
         <button id="inventory-toggle-btn">Toggle Inventory</button>
     </header>
 
-    <!-- Game Canvas -->
-    <canvas id="gameCanvas"></canvas>
+    <!-- Canvas Element
+    <canvas id="gameCanvas"></canvas> -->
 
-    <!-- Inventor -->
-    <div id="inventory" class="hidden">
+    <!-- Inventory Panel (Overlay) -->
+    <div id="inventory">
         <h2>Inventory</h2>
         <ul id="inventory-list"></ul>
     </div>
@@ -30,7 +29,7 @@
         </div>
     </div>
 
-    <!-- Overlay for Player Name -->
+    <!-- Input Overlay for Player Name -->
     <div id="input-overlay" class="hidden">
         <div id="input-content">
             <p>Welcome Human, please tell us your name before going forward.</p>
@@ -39,7 +38,9 @@
         </div>
     </div>
 
+    <!-- Audio Elements -->
     <audio id="pickup-sound" src="/assets/media/sounds/pickup.mp3"></audio>
     <audio id="travel-sound" src="/assets/media/sounds/travel.mp3"></audio>
+    <audio id="jumop-sound" src="/assets/media/sounds/jumpScare.mp3"></audio>
 </body>
 </html>
