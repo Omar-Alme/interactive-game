@@ -3,13 +3,17 @@ window.addEventListener('DOMContentLoaded', main);
 'use strict';
 
 // Game data
-const planets = [
-    {
+const planets = [{
         name: "Planet A",
         description: "Strange rock formations cover the landscape.",
-        items: [
-            { name: "Oxygen Tank", image: "/assets/media/objects/oxygenTank.png"},
-            { name: "Water Purifier", image: "/assets/media/objects/waterPurifier.png"}
+        items: [{
+                name: "Oxygen Tank",
+                image: "/assets/media/objects/oxygenTank.png"
+            },
+            {
+                name: "Water Purifier",
+                image: "/assets/media/objects/waterPurifier.png"
+            }
         ],
         alien: "Zorg",
         secretPlace: "An eerie cave emitting strange noises.",
@@ -18,9 +22,12 @@ const planets = [
     {
         name: "Planet B",
         description: "Lush forests with glowing plants.",
-        items: [
-            { name: "Fuel", image: "/assets/media/objects/fuel.png", x: 350, y: 250 }
-        ],
+        items: [{
+            name: "Fuel",
+            image: "/assets/media/objects/fuel.png",
+            x: 350,
+            y: 250
+        }],
         alien: "Xylo",
         secretPlace: "A hidden waterfall that seems to whisper.",
         backgroundImage: "/assets/media/Planets/planetB.png"
@@ -28,9 +35,12 @@ const planets = [
     {
         name: "Planet C",
         description: "A vast desert with crystal sands.",
-        items: [
-            { name: "Space Map", image: "/assets/media/objects/spaceMap.png", x: 200, y: 300 }
-        ],
+        items: [{
+            name: "Space Map",
+            image: "/assets/media/objects/spaceMap.png",
+            x: 200,
+            y: 300
+        }],
         alien: "Quark",
         secretPlace: "An ancient ruin with mysterious symbols.",
         backgroundImage: "/assets/media/Planets/planetC.png"
@@ -38,9 +48,12 @@ const planets = [
     {
         name: "Planet D",
         description: "Ice-covered mountains touch the sky.",
-        items: [
-            { name: "Energy Crystal", image: "/assets/media/objects/energyCrystal.png", x: 250, y: 350 }
-        ],
+        items: [{
+            name: "Energy Crystal",
+            image: "/assets/media/objects/energyCrystal.png",
+            x: 250,
+            y: 350
+        }],
         alien: "Frost",
         secretPlace: "A frozen lake that reflects other worlds.",
         backgroundImage: "/assets/media/Planets/planetD.png"
@@ -48,9 +61,12 @@ const planets = [
     {
         name: "Planet E",
         description: "Volcanic plains with rivers of lava.",
-        items: [
-            { name: "Heat Shield", image: "/assets/media/objects/heatShield.png", x: 300, y: 400 }
-        ],
+        items: [{
+            name: "Heat Shield",
+            image: "/assets/media/objects/heatShield.png",
+            x: 300,
+            y: 400
+        }],
         alien: "Blaze",
         secretPlace: "A fiery cave with a pulsating glow.",
         backgroundImage: "/assets/media/Planets/planetE.png"
@@ -86,7 +102,7 @@ const gameMain = document.getElementById('game-main');
 /**
  * Initializes the game by setting up event listeners and handling initial state.
  */
-function main(){
+function main() {
     inventoryToggle();
     initializeEventListeners();
 
@@ -102,7 +118,7 @@ function main(){
 }
 
 // -------------------------------------------EVENTSLISTENERS
-function initializeEventListeners(){
+function initializeEventListeners() {
 
     // Close Dialogue
     dialogueCloseBtn.addEventListener('click', () => {
@@ -127,7 +143,7 @@ function initializeEventListeners(){
 
 // -------------------------------------------TOGGLE
 
-function inventoryToggle(){
+function inventoryToggle() {
     // inventoryToggleBtn.classList.toggle('hidden');
     // inventoryList.classList.toggle('hidden');
     inventoryPanel.classList.toggle('visible');
@@ -138,26 +154,27 @@ function inventoryToggle(){
 function showOverlay(overlay) {
     overlay.classList.add('visible');
 }
+
 function hideOverlay(overlay) {
     overlay.classList.remove('visible');
 }
 
 
 // -------------------------------------------SUBMIT PLAYERNAME
-function submitPlayerName(){
+function submitPlayerName() {
     const name = playerNameInput.value.trim();
-    if(name !== ""){
+    if (name !== "") {
         playerName = name;
         localStorage.setItem('playerName', playerName);
         hideOverlay(inputOverlay);
         showPlanetSelection();
-    }else{
+    } else {
         alert("Please Enter a valid name to start")
     }
 }
 
 // -------------------------------------------SHOW PLANET CHOICES
-function showPlanetSelection(){
+function showPlanetSelection() {
 
     const planetOptions = planets.map((planet, index) => `<option value="${index}">${planet.name}</option>`).join('');
 
@@ -186,47 +203,102 @@ function showPlanetSelection(){
         } else {
             alert("Please select a valid planet.");
         }
-    }, { once: true });
+    }, {
+        once: true
+    });
 }
 
 // -------------------------------------------RENDER INVENTORY LIST
-function renderInventory(){
+function renderInventory() {
     inventoryList.innerHTML = "";
     if (inventory.length === 0) {
         const li = document.createElement("li");
         li.textContent = "No items in inventory.";
         inventoryList.appendChild(li);
         return;
-    } 
+    }
 }
 
 
 
 // -------------------------------------------RENDER PLANET 
-function renderPlanet(){
+function renderPlanet() {
     const planet = planets[currentPlanetIndex];
-    if (!planet) {
-        console.error("Invalid planet index.");
-        return;
-    }
-
+    
     gameMain.style.backgroundImage = `url('${planet.backgroundImage}')`;
 
     // Create planet description
+    const description = document.createElement('div');
+    description.id = 'planet-description';
+    description.textContent = planet.description;
 
     // Create Items Section
+    const itemsSection = document.createElement('div');
+    itemsSection.id = 'planet-items';
 
-    // Click to pick up items
+    if (planet.items && planet.items.length > 0) {
+        planet.items.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('item');
+            itemDiv.dataset.itemIndex = index; 
+
+            const itemImg = document.createElement('img');
+            itemImg.src = item.image;
+
+            const itemName = document.createElement('p');
+            itemName.textContent = item.name;
+
+            itemDiv.appendChild(itemImg);
+            itemDiv.appendChild(itemName);
+
+            // Click to pick up items
+            itemDiv.addEventListener('click', () => {
+                pickUpItem(index);
+            });
+
+            itemsSection.appendChild(itemDiv);
+        });
+    } else {
+        itemsSection.textContent = "No items available on this planet.";
+    }
+
 
     // Talk to alien button
-    talkToAlien();
+    const talkAlienBtn = document.createElement('button');
+    talkAlienBtn.textContent = `Talk to ${planet.alien}`;
+    talkAlienBtn.style.marginTop = '20px';
+    talkAlienBtn.style.padding = '10px 20px';
+    talkAlienBtn.style.fontSize = '16px';
+    talkAlienBtn.style.backgroundColor = '#444';
+    talkAlienBtn.style.color = '#fff';
+    talkAlienBtn.style.border = 'none';
+    talkAlienBtn.style.borderRadius = '4px';
+    talkAlienBtn.style.cursor = 'pointer';
+    talkAlienBtn.style.transition = 'background-color 0.3s';
+
+    talkAlienBtn.addEventListener('click', () => {
+        talkToAlien();
+    });
+
+    talkAlienBtn.addEventListener('mouseenter', () => {
+        talkAlienBtn.style.backgroundColor = '#666';
+    });
+
+    talkAlienBtn.addEventListener('mouseleave', () => {
+        talkAlienBtn.style.backgroundColor = '#444';
+    });
+    // talkToAlien();
 
     // Add all elements to game area
+    gameMain.innerHTML = '';
+    gameMain.appendChild(description);
+    gameMain.appendChild(itemsSection);
+    gameMain.appendChild(talkAlienBtn);
 }
 
 
 // -------------------------------------------TALK TO ALEIN
-function talkToAlien(){
+function talkToAlien() {
     const planet = planets[currentPlanetIndex];
     if (!planet || !planet.alien) {
         dialogueText.innerHTML = `<p>There is no one to talk to here.</p>`;
@@ -237,6 +309,25 @@ function talkToAlien(){
 }
 
 // -------------------------------------------PICKUP ITEMS
-function pickUpItem(){
+function pickUpItem(itemIndex) {
+    const planet = planets[currentPlanetIndex];
+    // Remove the item from the planet
+    const item = planet.items.splice(itemIndex, 1)[0];
+    // Add the item to inventory
+    inventory.push(item); 
+    localStorage.setItem('inventory', JSON.stringify(inventory));
+    localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
 
+    // Play pickup sound
+    
+
+    renderInventory();
+    renderPlanet();
+
+    // Show dialogue confirming item pickup
+    dialogueText.innerHTML = `<p>You picked up: ${item.name}!</p>`;
+    showOverlay(dialogueOverlay);
 }
+
+
+// -------------------------------------------PLAY AUDIO
