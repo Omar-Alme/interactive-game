@@ -81,22 +81,37 @@ const travelSound = document.getElementById("travel-sound");
 const jumpSound = document.getElementById("jump-sound");
 
 
+/**
+ * Initializes the game by setting up event listeners and handling initial state.
+ */
 function main(){
     inventoryToggle();
     initializeEventListeners();
+
+    if (!playerName) {
+        showOverlay(inputOverlay);
+        playerNameInput.focus();
+    }
 }
 
 
 function initializeEventListeners(){
 
     // Close Dialogue
-
+    dialogueCloseBtn.addEventListener('click', () => {
+        hideOverlay(dialogueOverlay);
+    });
 
     // Submit player Name
+    playerNameSubmitBtn.addEventListener('click', submitPlayerName);
 
 
     // Keypress to submit player name
-
+    playerNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            playerNameSubmitBtn.click();
+        }
+    });
 
     // Inventory toggle button
     inventoryToggleBtn.addEventListener('click', inventoryToggle);
@@ -108,5 +123,24 @@ function inventoryToggle(){
     // inventoryToggleBtn.classList.toggle('hidden');
     // inventoryList.classList.toggle('hidden');
     inventoryPanel.classList.toggle('visible');
+}
 
+function showOverlay(overlay) {
+    overlay.classList.add('visible');
+}
+
+function hideOverlay(overlay) {
+    overlay.classList.remove('visible');
+}
+
+
+
+function submitPlayerName(){
+    const name = playerNameInput.ariaValueMax.trim();
+    if(name !== ""){
+        playerName = name;
+        localStorage.setItem('playerName', playerName);
+    }else{
+        alert("Please Enter a valid name to start")
+    }
 }
