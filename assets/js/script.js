@@ -166,6 +166,7 @@ function main() {
     } else {
         renderInventory();
         renderPlanet();
+        checkAllItemsCollected();
     }
 }
 
