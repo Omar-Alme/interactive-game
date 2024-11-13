@@ -18,9 +18,11 @@ const planets = [{
         alien: "Zorg",
         secretPlace: {
             title: "Eerie Cave",
-            description: "An eerie cave emitting strange noises."
+            description: "An eerie cave emitting strange noises.",
+            film: "/assets/media/videos/A.mp4"
         },
-        backgroundImage: "/assets/media/Planets/planetA.png"
+        // backgroundImage: "/assets/media/Planets/planetA.png",
+        backgroundImage: "/assets/media/Planets/whisperingStones.png"
     },
     {
         name: "Luminous Grove",
@@ -34,9 +36,11 @@ const planets = [{
         alien: "Xylo",
         secretPlace: {
             title: "Whispering Waterfall",
-            description: "A hidden waterfall that seems to whisper."
+            description: "A hidden waterfall that seems to whisper.",
+            film: "/assets/media/videos/B.mp4"
         },
-        backgroundImage: "/assets/media/Planets/planetB.png"
+        // backgroundImage: "/assets/media/Planets/planetB.png",
+        backgroundImage: "/assets/media/Planets/luminousGrove.png"
     },
     {
         name: "Crystal Dunes",
@@ -50,9 +54,11 @@ const planets = [{
         alien: "Quark",
         secretPlace: {
             title: "Ancient Ruins",
-            description: "An ancient ruin with mysterious symbols."
+            description: "An ancient ruin with mysterious symbols.",
+            film: "/assets/media/videos/C.mp4"
         },
-        backgroundImage: "/assets/media/Planets/planetC.png"
+        // backgroundImage: "/assets/media/Planets/planetC.png",
+        backgroundImage: "/assets/media/Planets/crystalDunes.png"
     },
     {
         name: "Celestial Peaks",
@@ -66,9 +72,11 @@ const planets = [{
         alien: "Frost",
         secretPlace: {
             title: "Frozen Lake",
-            description: "A frozen lake that reflects other worlds."
+            description: "A frozen lake that reflects other worlds.",
+            film: "/assets/media/videos/D.mp4"
         },
-        backgroundImage: "/assets/media/Planets/planetD.png"
+        // backgroundImage: "/assets/media/Planets/planetD.png",
+        backgroundImage: "/assets/media/Planets/celestialPeaks.png"
     },
     {
         name: "Inferno's Heart",
@@ -82,9 +90,11 @@ const planets = [{
         alien: "Blaze",
         secretPlace: {
             title: "Fiery Cave",
-            description: "A fiery cave with a pulsating glow."
+            description: "A fiery cave with a pulsating glow.",
+            film: "/assets/media/videos/E.mp4"
         },
-        backgroundImage: "/assets/media/Planets/planetE.png"
+        // backgroundImage: "/assets/media/Planets/planetE.png",
+        backgroundImage: "/assets/media/Planets/infernoHeart.png"
     }
 ];
 
@@ -231,6 +241,7 @@ function showPlanetSelection() {
             localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
             hideOverlay(dialogueOverlay);
             renderPlanet();
+            renderInventory();
         } else {
             alert("Please select a valid planet.");
         }
@@ -333,9 +344,17 @@ function renderPlanet() {
     travelBtn.textContent = "Travel to Next Planet";
     travelBtn.addEventListener('click', travelToNextPlanet);
 
+    // Visit hidden spot
+    const hiddenSpotBtn = document.createElement('button');
+    hiddenSpotBtn.textContent = `Visit ${planet.secretPlace.title}`;
+    hiddenSpotBtn.addEventListener('click', visitHiddenSpot);
+
+
     actionButtons.appendChild(exploreBtn);
     actionButtons.appendChild(travelBtn);
     actionButtons.appendChild(talkAlienBtn);
+    actionButtons.appendChild(hiddenSpotBtn);
+
 
     // Add all elements to game area
     gameMain.innerHTML = '';
@@ -395,11 +414,11 @@ function explorePlanet() {
     } else {
         dialogueText.innerHTML = `<p>${planet.story}</p>`;
 
-        const voiceover = planet.voiceover; 
-        if (voiceover) {
-            const audio = new Audio(voiceover);
-            audio.play();
-        }
+        // const voiceover = planet.voiceover; 
+        // if (voiceover) {
+        //     const audio = new Audio(voiceover);
+        //     audio.play();
+        // }
     }
     showOverlay(dialogueOverlay);
 }
@@ -421,10 +440,36 @@ function travelToNextPlanet() {
     currentPlanetIndex = nextPlanetIndex;
     localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
 
-
     renderPlanet();
 
     // Show a dialogue showign travel destination
     dialogueText.innerHTML = `<p>Traveling to ${planets[currentPlanetIndex].name}...</p>`;
+    showOverlay(dialogueOverlay);
+}
+
+// -------------------------------------------------- VISTIT HIDDEN SPOT
+function visitHiddenSpot(){
+    const planet = planets[currentPlanetIndex];
+    if (!planet || !planet.secretPlace.film) {
+        dialogueText.innerHTML = `<p>There is no secret place to visit here.</p>`;
+        showOverlay(dialogueOverlay);
+        return;
+    }
+
+    // Create video elementt
+    const video = document.createElement('video');
+    video.id = 'dialogue-video';
+    video.src = planet.secretPlace.film;
+    video.controls = true;
+    video.autoplay = true;
+
+    const description = document.createElement('p');
+    description.innerHTML = `You venture into the secret place: <br> ${planet.secretPlace.description}`;
+
+    // Set dialogue content
+    dialogueText.innerHTML = '';
+    dialogueText.appendChild(description);
+    dialogueText.appendChild(video);
+
     showOverlay(dialogueOverlay);
 }
