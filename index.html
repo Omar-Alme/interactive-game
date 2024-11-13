@@ -6,25 +6,19 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="/assets/css/styles.css">
     <script defer src="/assets/js/script.js"></script>
-
 </head>
 <body>
     <header>
         <h1>Space Exploration Quest</h1>
         <button id="inventory-toggle-btn">Toggle Inventory</button>
     </header>
-
-    <!-- Canvas Element
-    <canvas id="gameCanvas"></canvas> -->
     <main id="game-main"></main>
-    
-
     <!-- Inventory Panel (Overlay) -->
     <div id="inventory">
         <h2>Inventory</h2>
-        <ul id="inventory-list"></ul>
+        <ul id="inventory-list">
+        </ul>
     </div>
-
     <!-- Dialogue Overlay -->
     <div id="dialogue-overlay" class="hidden">
         <div id="dialogue-content">
@@ -32,7 +26,6 @@
             <button id="dialogue-close-btn">Close</button>
         </div>
     </div>
-
     <!-- Input Overlay for Player Name -->
     <div id="input-overlay" class="hidden">
         <div id="input-content">
@@ -41,11 +34,9 @@
             <button id="player-name-submit-btn">Submit</button>
         </div>
     </div>
-
     <!-- Audio Elements -->
     <audio id="pickup-sound" src="/assets/media/sounds/pickup.mp3"></audio>
     <audio id="travel-sound" src="/assets/media/sounds/travel.mp3"></audio>
     <audio id="alien-sound" src="/assets/media/sounds/alienVoice.mp3"></audio>
-
 </body>
 </html>

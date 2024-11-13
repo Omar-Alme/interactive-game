@@ -5,7 +5,6 @@ const planets = [{
         name: "Whispering Stones",
         description: "Strange rock formations cover the landscape.",
         story: "Legends say that the rocks whisper secrets of the universe, echoing the thoughts of ancient beings who once roamed this land. Travelers often report hearing faint voices carried by the wind, guiding them to hidden treasures and forgotten knowledge. The vibrant colors of the rocks shift with the time of day, creating a mesmerizing spectacle that draws explorers from across the galaxy.",
-        voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
                 id: 1,
                 name: "Oxygen Tank",
@@ -27,14 +26,12 @@ const planets = [{
                 image: "/assets/media/jumpscares/jumpscare1.png"
             }
         },
-        // backgroundImage: "/assets/media/Planets/planetA.png",
         backgroundImage: "/assets/media/Planets/whisperingStones.png"
     },
     {
         name: "Luminous Grove",
         description: "Lush forests with glowing plants.",
         story: "The glowing plants are said to be the tears of ancient spirits, weeping for the lost harmony of nature. As night falls, the forest transforms into a magical realm, illuminated by the soft glow of bioluminescent flora. It is believed that these plants hold the memories of the planet's past, and those who listen closely can hear the stories of the spirits that once thrived here, sharing wisdom and warnings to those who dare to explore.",
-        voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
             id: 3,
             name: "Fuel",
@@ -50,14 +47,12 @@ const planets = [{
                 image: "/assets/media/jumpscares/jumpscare2.png"
             }
         },
-        // backgroundImage: "/assets/media/Planets/planetB.png",
         backgroundImage: "/assets/media/Planets/luminousGrove.png"
     },
     {
         name: "Crystal Dunes",
         description: "A vast desert with crystal sands.",
         story: "The crystals are remnants of a long-lost civilization, shimmering under the relentless sun. Each crystal is said to contain the essence of the people who once inhabited this land, their dreams and aspirations trapped within. As the wind sweeps across the dunes, it creates haunting melodies that tell tales of glory and despair. Adventurers who brave the desert often seek these crystals, hoping to unlock the secrets of the past and harness their power.",
-        voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
             id: 4,
             name: "Space Map",
@@ -73,14 +68,12 @@ const planets = [{
                 image: "/assets/media/jumpscares/jumpscare4.png"
             }
         },
-        // backgroundImage: "/assets/media/Planets/planetC.png",
         backgroundImage: "/assets/media/Planets/crystalDunes.png"
     },
     {
         name: "Celestial Peaks",
         description: "Ice-covered mountains touch the sky.",
         story: "It is said that the mountains hold the memories of the stars, their icy peaks reflecting the cosmos in a breathtaking display. The air is filled with the sound of cracking ice, reminiscent of the whispers of celestial beings. Many believe that hidden within the glaciers are ancient artifacts that can reveal the history of the universe. Those who venture here often find themselves in a battle against the elements, but the rewards are said to be beyond imagination.",
-        voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
             id: 5,
             name: "Energy Crystal",
@@ -96,7 +89,6 @@ const planets = [{
                 image: "/assets/media/jumpscares/jumpscare5.png"
             }
         },
-        // backgroundImage: "/assets/media/Planets/planetD.png",
         backgroundImage: "/assets/media/Planets/celestialPeaks.png"
     },
     {
@@ -119,7 +111,6 @@ const planets = [{
                 image: "/assets/media/jumpscares/jumpscare6.png"
             }
         },
-        // backgroundImage: "/assets/media/Planets/planetE.png",
         backgroundImage: "/assets/media/Planets/infernoHeart.png"
     }
 ];
@@ -158,6 +149,9 @@ function main() {
     inventoryToggle();
     initializeEventListeners();
 
+    inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+
+
     if (!playerName) {
         showOverlay(inputOverlay);
         playerNameInput.focus();
@@ -168,11 +162,16 @@ function main() {
         renderPlanet();
         checkAllItemsCollected();
     }
+
+    if (localStorage.getItem('endSceneTriggered') === 'true') {
+        triggerEndScene();
+    }
 }
 
-// -------------------------------------------EVENTSLISTENERS
+/**
+ * Initializes event listeners for multiple game elements.
+ */
 function initializeEventListeners() {
-
     // Close Dialogue
     dialogueCloseBtn.addEventListener('click', () => {
         hideOverlay(dialogueOverlay);
@@ -185,11 +184,6 @@ function initializeEventListeners() {
             alienSound.pause(); 
             alienSound.currentTime = 0;
         }
-
-        // if (voiceover) {
-        //     voiceover.pause(); 
-        //     voiceover.currentTime = 0;
-        // }
     });
 
     // Submit player Name
@@ -208,26 +202,35 @@ function initializeEventListeners() {
 
 }
 
-// -------------------------------------------TOGGLE
-
+/**
+ * Toggles the visibility of the inventory panel.
+ */
 function inventoryToggle() {
-    // inventoryToggleBtn.classList.toggle('hidden');
-    // inventoryList.classList.toggle('hidden');
     inventoryPanel.classList.toggle('visible');
 }
 
 
-// -------------------------------------------OVERLAYS
+/**
+ * Shows the specified overlay.
+ * @param {HTMLElement} overlay - The overlay element to show.
+ */
 function showOverlay(overlay) {
     overlay.classList.add('visible');
 }
 
+
+/**
+ * Hides the specified overlay.
+ * @param {HTMLElement} overlay - The overlay element to hide.
+ */
 function hideOverlay(overlay) {
     overlay.classList.remove('visible');
 }
 
 
-// -------------------------------------------SUBMIT PLAYERNAME
+/**
+ * Submits the player's name and stores it in local storage.
+ */
 function submitPlayerName() {
     const name = playerNameInput.value.trim();
     if (name !== "") {
@@ -240,7 +243,9 @@ function submitPlayerName() {
     }
 }
 
-// -------------------------------------------SHOW PLANET CHOICES
+/**
+ * Displays the planet selection dialog for the player.
+ */
 function showPlanetSelection() {
 
     const planetOptions = planets.map((planet, index) => `<option value="${index}">${planet.name}</option>`).join('');
@@ -276,7 +281,9 @@ function showPlanetSelection() {
     });
 }
 
-// -------------------------------------------RENDER INVENTORY LIST
+/**
+ * Renders the inventory list in the UI.
+ */
 function renderInventory() {
     inventoryList.innerHTML = "";
     if (inventory.length === 0) {
@@ -297,12 +304,11 @@ function renderInventory() {
         li.appendChild(span);
         inventoryList.appendChild(li);
     });
-
 }
 
-
-
-// -------------------------------------------RENDER PLANET 
+/**
+ * Renders the current planet's details and items in the UI.
+ */
 function renderPlanet() {
     const planet = planets[currentPlanetIndex];
 
@@ -312,7 +318,6 @@ function renderPlanet() {
     const planetName = document.createElement('h2');
     planetName.id = 'planet-name';
     planetName.textContent = planet.name;
-
 
     // Create planet description
     const description = document.createElement('div');
@@ -330,7 +335,7 @@ function renderPlanet() {
         });
 
         if (availableItems.length > 0) {
-            availableItems.forEach((item, index) => {
+            availableItems.forEach((item) => {
             const itemDiv = document.createElement('div');
             itemDiv.classList.add('item');
             itemDiv.dataset.itemId = item.id;
@@ -354,6 +359,7 @@ function renderPlanet() {
     } else {
         itemsSection.textContent = "No items available on this planet.";
     }
+}
 
 
 
@@ -396,8 +402,9 @@ function renderPlanet() {
     gameMain.appendChild(actionButtons);
 }
 
-
-// -------------------------------------------TALK TO ALEIN
+/**
+ * Initiates a conversation with the alien on the current planet.
+ */
 function talkToAlien() {
     const planet = planets[currentPlanetIndex];
     if (!planet || !planet.alien) {
@@ -413,11 +420,13 @@ function talkToAlien() {
     showOverlay(dialogueOverlay);
 }
 
-// -------------------------------------------PICKUP ITEMS
+/**
+ * Picks up the specified item and updates the inventory.
+ * @param {Object} item - The item to pick up.
+ */
 function pickUpItem(item) {
-    // const planet = planets[currentPlanetIndex];
-    // Remove the item from the planet
-    inventory.push(item); // Add the item to inventory
+
+    inventory.push(item); 
     localStorage.setItem('inventory', JSON.stringify(inventory));
 
     // Play pickup sound
@@ -434,34 +443,30 @@ function pickUpItem(item) {
     showOverlay(dialogueOverlay);
     
     checkAllItemsCollected();
-
 }
 
-
-// -------------------------------------------EXPLOTE CURRENT PLANET
+/**
+ * Explores the current planet and displays its story.
+ */
 function explorePlanet() {
     const planet = planets[currentPlanetIndex];
     if (!planet || !planet.story) {
         dialogueText.innerHTML = `<p>There is nothing much to explore here.</p>`;
     } else {
         dialogueText.innerHTML = `<p>${planet.story}</p>`;
-
-        // const voiceover = planet.voiceover; 
-        // if (voiceover) {
-        //     const audio = new Audio(voiceover);
-        //     audio.play();
-        // }
     }
     showOverlay(dialogueOverlay);
 }
 
-// -------------------------------------------TRAVEL TO NEXT PLANET
+/**
+ * Travels to the next planet in the array.
+ */
 function travelToNextPlanet() {
+    // Play travel sound on travel
     if (travelSound) {
         travelSound.currentTime = 0;
         travelSound.play();
     }
-
     // Check which planet we are at
     let nextPlanetIndex = currentPlanetIndex + 1;
     if (nextPlanetIndex >= planets.length) {
@@ -479,7 +484,9 @@ function travelToNextPlanet() {
     showOverlay(dialogueOverlay);
 }
 
-// -------------------------------------------------- VISTIT HIDDEN SPOT
+/**
+ * Visits the hidden spot on the current planet and plays the associated video.
+ */
 function visitHiddenSpot(){
     const planet = planets[currentPlanetIndex];
     if (!planet || !planet.secretPlace.film) {
@@ -516,10 +523,13 @@ function visitHiddenSpot(){
     }, { once: true });
 }
 
-
-// ----------------------------------------------------- JUMP SCARE TRIGGER
+/**
+ * Triggers a jumpscare with sound and image.
+ * @param {string} jumpscareSoundPath - The path to the jumpscare sound file.
+ * @param {string} jumpscareImagePath - The path to the jumpscare image file.
+ */
 function triggerJumpscare(jumpscareSoundPath, jumpscareImagePath) {
-    
+
     const jumpscareAudio = new Audio(jumpscareSoundPath);
     jumpscareAudio.play();
 
@@ -551,8 +561,9 @@ function triggerJumpscare(jumpscareSoundPath, jumpscareImagePath) {
     });
 }
 
-
-// ----------------------------------------------------- CHECK ALL ITEMS PICKED
+/**
+ * Checks if all items have been collected and triggers the end scene if so.
+ */
 function checkAllItemsCollected() {
     const allItems = planets.flatMap(planet => planet.items);
 
@@ -561,6 +572,40 @@ function checkAllItemsCollected() {
     });
 
     if (allCollected) {
-        alert('all items picked')
+        triggerEndScene();
     }
-}}
+}
+
+/**
+ * Triggers the end scene when all items are collected.
+ */
+function triggerEndScene() {
+    if (localStorage.getItem('endSceneTriggered') === 'true') {
+        return; 
+    }
+
+    localStorage.setItem('endSceneTriggered', 'true');
+
+    // Create the end scene overlay
+    const endSceneOverlay = document.createElement('div');
+    endSceneOverlay.classList.add('endscene-overlay');
+
+    // Create content for the end scene
+    endSceneOverlay.innerHTML = `
+        <div class="endscene-content">
+            <h2>Mission Accomplished!</h2>
+            <p>Congratulations, ${playerName}! You've collected all the necessary items and successfully escaped to Earth.</p>
+            <button id="endscene-close-btn">Close</button>
+        </div>
+    `;
+
+    // Append the overlay to the body
+    document.body.appendChild(endSceneOverlay);
+
+    requestAnimationFrame(() => {
+        endSceneOverlay.classList.add('visible');
+    });    
+
+    localStorage.clear();
+    location.reload();
+}
