@@ -1,11 +1,11 @@
 window.addEventListener('DOMContentLoaded', main);
 
-'use strict';
-
 // Game data
 const planets = [{
-        name: "Planet A",
+        name: "Whispering Stones",
         description: "Strange rock formations cover the landscape.",
+        story: "Legends say that the rocks whisper secrets of the universe, echoing the thoughts of ancient beings who once roamed this land. Travelers often report hearing faint voices carried by the wind, guiding them to hidden treasures and forgotten knowledge. The vibrant colors of the rocks shift with the time of day, creating a mesmerizing spectacle that draws explorers from across the galaxy.",
+        voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
                 name: "Oxygen Tank",
                 image: "/assets/media/objects/oxygenTank.png"
@@ -16,59 +16,74 @@ const planets = [{
             }
         ],
         alien: "Zorg",
-        secretPlace: "An eerie cave emitting strange noises.",
+        secretPlace: {
+            title: "Eerie Cave",
+            description: "An eerie cave emitting strange noises."
+        },
         backgroundImage: "/assets/media/Planets/planetA.png"
     },
     {
-        name: "Planet B",
+        name: "Luminous Grove",
         description: "Lush forests with glowing plants.",
+        story: "The glowing plants are said to be the tears of ancient spirits, weeping for the lost harmony of nature. As night falls, the forest transforms into a magical realm, illuminated by the soft glow of bioluminescent flora. It is believed that these plants hold the memories of the planet's past, and those who listen closely can hear the stories of the spirits that once thrived here, sharing wisdom and warnings to those who dare to explore.",
+        voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
             name: "Fuel",
             image: "/assets/media/objects/fuel.png",
-            x: 350,
-            y: 250
         }],
         alien: "Xylo",
-        secretPlace: "A hidden waterfall that seems to whisper.",
+        secretPlace: {
+            title: "Whispering Waterfall",
+            description: "A hidden waterfall that seems to whisper."
+        },
         backgroundImage: "/assets/media/Planets/planetB.png"
     },
     {
-        name: "Planet C",
+        name: "Crystal Dunes",
         description: "A vast desert with crystal sands.",
+        story: "The crystals are remnants of a long-lost civilization, shimmering under the relentless sun. Each crystal is said to contain the essence of the people who once inhabited this land, their dreams and aspirations trapped within. As the wind sweeps across the dunes, it creates haunting melodies that tell tales of glory and despair. Adventurers who brave the desert often seek these crystals, hoping to unlock the secrets of the past and harness their power.",
+        voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
             name: "Space Map",
             image: "/assets/media/objects/spaceMap.png",
-            x: 200,
-            y: 300
         }],
         alien: "Quark",
-        secretPlace: "An ancient ruin with mysterious symbols.",
+        secretPlace: {
+            title: "Ancient Ruins",
+            description: "An ancient ruin with mysterious symbols."
+        },
         backgroundImage: "/assets/media/Planets/planetC.png"
     },
     {
-        name: "Planet D",
+        name: "Celestial Peaks",
         description: "Ice-covered mountains touch the sky.",
+        story: "It is said that the mountains hold the memories of the stars, their icy peaks reflecting the cosmos in a breathtaking display. The air is filled with the sound of cracking ice, reminiscent of the whispers of celestial beings. Many believe that hidden within the glaciers are ancient artifacts that can reveal the history of the universe. Those who venture here often find themselves in a battle against the elements, but the rewards are said to be beyond imagination.",
+        voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
             name: "Energy Crystal",
             image: "/assets/media/objects/energyCrystal.png",
-            x: 250,
-            y: 350
         }],
         alien: "Frost",
-        secretPlace: "A frozen lake that reflects other worlds.",
+        secretPlace: {
+            title: "Frozen Lake",
+            description: "A frozen lake that reflects other worlds."
+        },
         backgroundImage: "/assets/media/Planets/planetD.png"
     },
     {
-        name: "Planet E",
+        name: "Inferno's Heart",
         description: "Volcanic plains with rivers of lava.",
+        story: "The lava flows are believed to be the veins of a sleeping giant, pulsating with the life force of the planet. The air is thick with the scent of sulfur and the heat radiates from the ground, creating an otherworldly atmosphere. Legends tell of a time when the giant awoke, reshaping the landscape and bringing forth new life. Explorers often seek the heart of the volcano, hoping to witness the raw power of nature and uncover the secrets buried beneath the molten rock.",
+        voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
             name: "Heat Shield",
             image: "/assets/media/objects/heatShield.png",
-            x: 300,
-            y: 400
         }],
         alien: "Blaze",
-        secretPlace: "A fiery cave with a pulsating glow.",
+        secretPlace: {
+            title: "Fiery Cave",
+            description: "A fiery cave with a pulsating glow."
+        },
         backgroundImage: "/assets/media/Planets/planetE.png"
     }
 ];
@@ -95,6 +110,8 @@ const inventoryToggleBtn = document.getElementById('inventory-toggle-btn');
 const pickupSound = document.getElementById("pickup-sound");
 const travelSound = document.getElementById("travel-sound");
 const jumpSound = document.getElementById("jump-sound");
+const alienSound = document.getElementById("alien-sound");
+
 // Game Main
 const gameMain = document.getElementById('game-main');
 
@@ -123,6 +140,20 @@ function initializeEventListeners() {
     // Close Dialogue
     dialogueCloseBtn.addEventListener('click', () => {
         hideOverlay(dialogueOverlay);
+        if (travelSound) {
+            travelSound.pause(); 
+            travelSound.currentTime = 0;
+        }
+
+        if (alienSound) {
+            alienSound.pause(); 
+            alienSound.currentTime = 0;
+        }
+
+        // if (voiceover) {
+        //     voiceover.pause(); 
+        //     voiceover.currentTime = 0;
+        // }
     });
 
     // Submit player Name
@@ -217,6 +248,19 @@ function renderInventory() {
         inventoryList.appendChild(li);
         return;
     }
+    inventory.forEach(item => {
+        const li = document.createElement("li");
+        const img = document.createElement("img");
+        img.src = item.image;
+        img.alt = item.name;
+        img.title = item.name;
+        li.appendChild(img);
+        const span = document.createElement("span");
+        span.textContent = item.name;
+        li.appendChild(span);
+        inventoryList.appendChild(li);
+    });
+
 }
 
 
@@ -224,8 +268,14 @@ function renderInventory() {
 // -------------------------------------------RENDER PLANET 
 function renderPlanet() {
     const planet = planets[currentPlanetIndex];
-    
+
     gameMain.style.backgroundImage = `url('${planet.backgroundImage}')`;
+
+    // Create plant Name
+    const planetName = document.createElement('h2');
+    planetName.id = 'planet-name';
+    planetName.textContent = planet.name;
+
 
     // Create planet description
     const description = document.createElement('div');
@@ -240,7 +290,7 @@ function renderPlanet() {
         planet.items.forEach((item, index) => {
             const itemDiv = document.createElement('div');
             itemDiv.classList.add('item');
-            itemDiv.dataset.itemIndex = index; 
+            itemDiv.dataset.itemIndex = index;
 
             const itemImg = document.createElement('img');
             itemImg.src = item.image;
@@ -263,37 +313,36 @@ function renderPlanet() {
     }
 
 
+
+    // ACTIONS BUTTON CONTAINER
+    const actionButtons = document.createElement('div');
+    actionButtons.classList.add('action-buttons');
+
     // Talk to alien button
     const talkAlienBtn = document.createElement('button');
     talkAlienBtn.textContent = `Talk to ${planet.alien}`;
-    talkAlienBtn.style.marginTop = '20px';
-    talkAlienBtn.style.padding = '10px 20px';
-    talkAlienBtn.style.fontSize = '16px';
-    talkAlienBtn.style.backgroundColor = '#444';
-    talkAlienBtn.style.color = '#fff';
-    talkAlienBtn.style.border = 'none';
-    talkAlienBtn.style.borderRadius = '4px';
-    talkAlienBtn.style.cursor = 'pointer';
-    talkAlienBtn.style.transition = 'background-color 0.3s';
+    talkAlienBtn.addEventListener('click', talkToAlien);
 
-    talkAlienBtn.addEventListener('click', () => {
-        talkToAlien();
-    });
+    // Explore Planet Button
+    const exploreBtn = document.createElement('button');
+    exploreBtn.textContent = "Explore Planet";
+    exploreBtn.addEventListener('click', explorePlanet);
 
-    talkAlienBtn.addEventListener('mouseenter', () => {
-        talkAlienBtn.style.backgroundColor = '#666';
-    });
+    // Travel to Next Planet Button
+    const travelBtn = document.createElement('button');
+    travelBtn.textContent = "Travel to Next Planet";
+    travelBtn.addEventListener('click', travelToNextPlanet);
 
-    talkAlienBtn.addEventListener('mouseleave', () => {
-        talkAlienBtn.style.backgroundColor = '#444';
-    });
-    // talkToAlien();
+    actionButtons.appendChild(exploreBtn);
+    actionButtons.appendChild(travelBtn);
+    actionButtons.appendChild(talkAlienBtn);
 
     // Add all elements to game area
     gameMain.innerHTML = '';
+    gameMain.appendChild(planetName);
     gameMain.appendChild(description);
     gameMain.appendChild(itemsSection);
-    gameMain.appendChild(talkAlienBtn);
+    gameMain.appendChild(actionButtons);
 }
 
 
@@ -304,6 +353,11 @@ function talkToAlien() {
         dialogueText.innerHTML = `<p>There is no one to talk to here.</p>`;
     } else {
         dialogueText.innerHTML = `<p>You meet ${planet.alien}, who shares mysterious knowledge.</p>`;
+
+        if (alienSound) {
+            alienSound.currentTime = 0;
+            alienSound.play();
+        }
     }
     showOverlay(dialogueOverlay);
 }
@@ -314,12 +368,15 @@ function pickUpItem(itemIndex) {
     // Remove the item from the planet
     const item = planet.items.splice(itemIndex, 1)[0];
     // Add the item to inventory
-    inventory.push(item); 
+    inventory.push(item);
     localStorage.setItem('inventory', JSON.stringify(inventory));
     localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
 
     // Play pickup sound
-    
+    if (pickupSound) {
+        pickupSound.currentTime = 0;
+        pickupSound.play();
+    }
 
     renderInventory();
     renderPlanet();
@@ -330,4 +387,44 @@ function pickUpItem(itemIndex) {
 }
 
 
-// -------------------------------------------PLAY AUDIO
+// -------------------------------------------EXPLOTE CURRENT PLANET
+function explorePlanet() {
+    const planet = planets[currentPlanetIndex];
+    if (!planet || !planet.story) {
+        dialogueText.innerHTML = `<p>There is nothing much to explore here.</p>`;
+    } else {
+        dialogueText.innerHTML = `<p>${planet.story}</p>`;
+
+        const voiceover = planet.voiceover; 
+        if (voiceover) {
+            const audio = new Audio(voiceover);
+            audio.play();
+        }
+    }
+    showOverlay(dialogueOverlay);
+}
+
+// -------------------------------------------TRAVEL TO NEXT PLANET
+function travelToNextPlanet() {
+    if (travelSound) {
+        travelSound.currentTime = 0;
+        travelSound.play();
+    }
+
+    // Check which planet we are at
+    let nextPlanetIndex = currentPlanetIndex + 1;
+    if (nextPlanetIndex >= planets.length) {
+        // LOop back to first planet after all passed
+        nextPlanetIndex = 0;
+    }
+
+    currentPlanetIndex = nextPlanetIndex;
+    localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
+
+
+    renderPlanet();
+
+    // Show a dialogue showign travel destination
+    dialogueText.innerHTML = `<p>Traveling to ${planets[currentPlanetIndex].name}...</p>`;
+    showOverlay(dialogueOverlay);
+}
