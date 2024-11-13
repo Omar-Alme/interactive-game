@@ -139,7 +139,6 @@ const inventoryToggleBtn = document.getElementById('inventory-toggle-btn');
 // Audio Elements
 const pickupSound = document.getElementById("pickup-sound");
 const travelSound = document.getElementById("travel-sound");
-const jumpSound = document.getElementById("jump-sound");
 const alienSound = document.getElementById("alien-sound");
 
 // Game Main
@@ -494,55 +493,47 @@ function visitHiddenSpot(){
 
     showOverlay(dialogueOverlay);
 
+
     video.addEventListener('ended', () => {
-        triggerJumpscare();
+
+        const jumpscareSoundPath = planet.secretPlace.jumpscare.soundId;
+        const jumpscareImagePath = planet.secretPlace.jumpscare.image;
+
+        triggerJumpscare(jumpscareSoundPath, jumpscareImagePath);
     }, { once: true });
 }
 
 
 // ----------------------------------------------------- JUMP SCARE TRIGGER
-function triggerJumpscare() {
-    const planet = planets[currentPlanetIndex];
-    const jumpScareSound = document.getElementById('jump-sound');
-    const jumpScareImagePath = planet.secretPlace.jumpscare.image; 
-    const jumpScareSoundPath = planet.secretPlace.jumpscare.soundId; 
+function triggerJumpscare(jumpscareSoundPath, jumpscareImagePath) {
+    
+    const jumpscareAudio = new Audio(jumpscareSoundPath);
+    jumpscareAudio.play();
 
-    if (jumpScareSoundPath) {
-        const audio = new Audio(jumpScareSoundPath);
-        audio.currentTime = 0;
-        audio.play();
-    }
-
-    // Create a fullscreen overlay for the jumpscare image
     const jumpscareOverlay = document.createElement('div');
-    jumpscareOverlay.id = 'jumpscare-overlay';
-    jumpscareOverlay.style.backgroundImage = `url('${jumpScareImagePath}')`;
-
+    jumpscareOverlay.classList.add('jumpscare-overlay');
+    jumpscareOverlay.style.backgroundImage = `url('${jumpscareImagePath}')`; 
 
     // Append the overlay to the body
     document.body.appendChild(jumpscareOverlay);
 
-    void jumpscareOverlay.offsetWidth;
-    jumpscareOverlay.style.opacity = '1';
+    requestAnimationFrame(() => {
+        jumpscareOverlay.classList.add('visible');
+    });
 
-    // Event listener to remove the jumpscare overlay when the sound ends
-    if (jumpScareSoundPath) {
-        jumpScareSound.addEventListener('ended', () => {
-            jumpscareOverlay.style.opacity = '0';
-            // remove jumpsacre overlay after transition
-            jumpscareOverlay.addEventListener('transitionend', () => {
-                jumpscareOverlay.remove();
-            }, { once: true });
-        }, { once: true }); 
-    
-    }
+    jumpscareAudio.addEventListener('ended', () => {
+
+        jumpscareOverlay.classList.remove('visible');
+
+        jumpscareOverlay.addEventListener('transitionend', () => {
+            jumpscareOverlay.remove();
+        }, { once: true });
+    }, { once: true });
     
     // Close jumpscare earlier 
     jumpscareOverlay.addEventListener('click', () => {
-        if (!jumpScareSound && !jumpScareSound.paused) {
-            jumpScareSound.pause();
-            jumpScareSound.currentTime = 0;
-        }
+        jumpscareAudio.pause();
+        jumpscareAudio.currentTime = 0;
         jumpscareOverlay.remove();
     });
 }
