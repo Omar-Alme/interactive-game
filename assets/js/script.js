@@ -7,10 +7,12 @@ const planets = [{
         story: "Legends say that the rocks whisper secrets of the universe, echoing the thoughts of ancient beings who once roamed this land. Travelers often report hearing faint voices carried by the wind, guiding them to hidden treasures and forgotten knowledge. The vibrant colors of the rocks shift with the time of day, creating a mesmerizing spectacle that draws explorers from across the galaxy.",
         voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
+                id: 1,
                 name: "Oxygen Tank",
                 image: "/assets/media/objects/oxygenTank.png"
             },
             {
+                id: 2,
                 name: "Water Purifier",
                 image: "/assets/media/objects/waterPurifier.png"
             }
@@ -34,6 +36,7 @@ const planets = [{
         story: "The glowing plants are said to be the tears of ancient spirits, weeping for the lost harmony of nature. As night falls, the forest transforms into a magical realm, illuminated by the soft glow of bioluminescent flora. It is believed that these plants hold the memories of the planet's past, and those who listen closely can hear the stories of the spirits that once thrived here, sharing wisdom and warnings to those who dare to explore.",
         voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
+            id: 3,
             name: "Fuel",
             image: "/assets/media/objects/fuel.png",
         }],
@@ -56,6 +59,7 @@ const planets = [{
         story: "The crystals are remnants of a long-lost civilization, shimmering under the relentless sun. Each crystal is said to contain the essence of the people who once inhabited this land, their dreams and aspirations trapped within. As the wind sweeps across the dunes, it creates haunting melodies that tell tales of glory and despair. Adventurers who brave the desert often seek these crystals, hoping to unlock the secrets of the past and harness their power.",
         voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
+            id: 4,
             name: "Space Map",
             image: "/assets/media/objects/spaceMap.png",
         }],
@@ -78,6 +82,7 @@ const planets = [{
         story: "It is said that the mountains hold the memories of the stars, their icy peaks reflecting the cosmos in a breathtaking display. The air is filled with the sound of cracking ice, reminiscent of the whispers of celestial beings. Many believe that hidden within the glaciers are ancient artifacts that can reveal the history of the universe. Those who venture here often find themselves in a battle against the elements, but the rewards are said to be beyond imagination.",
         voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
+            id: 5,
             name: "Energy Crystal",
             image: "/assets/media/objects/energyCrystal.png",
         }],
@@ -100,6 +105,7 @@ const planets = [{
         story: "The lava flows are believed to be the veins of a sleeping giant, pulsating with the life force of the planet. The air is thick with the scent of sulfur and the heat radiates from the ground, creating an otherworldly atmosphere. Legends tell of a time when the giant awoke, reshaping the landscape and bringing forth new life. Explorers often seek the heart of the volcano, hoping to witness the raw power of nature and uncover the secrets buried beneath the molten rock.",
         voiceover: "/assets/media/sounds/alienVoice.mp3",
         items: [{
+            id: 6,
             name: "Heat Shield",
             image: "/assets/media/objects/heatShield.png",
         }],
@@ -156,7 +162,7 @@ function main() {
         showOverlay(inputOverlay);
         playerNameInput.focus();
     } else if (currentPlanetIndex === -1) {
-        // showPlanetSelection();
+        showPlanetSelection();
     } else {
         renderInventory();
         renderPlanet();
@@ -317,10 +323,16 @@ function renderPlanet() {
     itemsSection.id = 'planet-items';
 
     if (planet.items && planet.items.length > 0) {
-        planet.items.forEach((item, index) => {
+        // Filter items that are alraedy inside the inventory
+        const availableItems = planet.items.filter(item => {
+            return !inventory.some(collectedItem => collectedItem.id === item.id);
+        });
+
+        if (availableItems.length > 0) {
+            availableItems.forEach((item, index) => {
             const itemDiv = document.createElement('div');
             itemDiv.classList.add('item');
-            itemDiv.dataset.itemIndex = index;
+            itemDiv.dataset.itemId = item.id;
 
             const itemImg = document.createElement('img');
             itemImg.src = item.image;
@@ -333,7 +345,7 @@ function renderPlanet() {
 
             // Click to pick up items
             itemDiv.addEventListener('click', () => {
-                pickUpItem(index);
+                pickUpItem(item);
             });
 
             itemsSection.appendChild(itemDiv);
@@ -401,14 +413,11 @@ function talkToAlien() {
 }
 
 // -------------------------------------------PICKUP ITEMS
-function pickUpItem(itemIndex) {
-    const planet = planets[currentPlanetIndex];
+function pickUpItem(item) {
+    // const planet = planets[currentPlanetIndex];
     // Remove the item from the planet
-    const item = planet.items.splice(itemIndex, 1)[0];
-    // Add the item to inventory
-    inventory.push(item);
+    inventory.push(item); // Add the item to inventory
     localStorage.setItem('inventory', JSON.stringify(inventory));
-    localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
 
     // Play pickup sound
     if (pickupSound) {
@@ -422,6 +431,9 @@ function pickUpItem(itemIndex) {
     // Show dialogue confirming item pickup
     dialogueText.innerHTML = `<p>You picked up: ${item.name}!</p>`;
     showOverlay(dialogueOverlay);
+    
+    checkAllItemsCollected();
+
 }
 
 
@@ -537,3 +549,17 @@ function triggerJumpscare(jumpscareSoundPath, jumpscareImagePath) {
         jumpscareOverlay.remove();
     });
 }
+
+
+// ----------------------------------------------------- CHECK ALL ITEMS PICKED
+function checkAllItemsCollected() {
+    const allItems = planets.flatMap(planet => planet.items);
+
+    const allCollected = allItems.every(item => {
+        return inventory.some(collectedItem => collectedItem.id === item.id);
+    });
+
+    if (allCollected) {
+        alert('all items picked')
+    }
+}}
