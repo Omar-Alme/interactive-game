@@ -20,10 +20,10 @@ const planets = [{
             title: "Eerie Cave",
             description: "An eerie cave emitting strange noises.",
             film: "/assets/media/videos/A.mp4",
-            // jumpscare: {
-            //     soundId: "", 
-            //     image: "/assets/media/jumpscares/jumpscare1.png"
-            // }
+            jumpscare: {
+                soundId: "/assets/media/sounds/jumpscares/jumpscare1.mp3", 
+                image: "/assets/media/jumpscares/jumpscare1.png"
+            }
         },
         // backgroundImage: "/assets/media/Planets/planetA.png",
         backgroundImage: "/assets/media/Planets/whisperingStones.png"
@@ -42,10 +42,10 @@ const planets = [{
             title: "Whispering Waterfall",
             description: "A hidden waterfall that seems to whisper.",
             film: "/assets/media/videos/B.mp4",
-            // jumpscare: {
-            //     soundId: "", 
-            //     image: "/assets/media/jumpscares/jumpscare1.png"
-            // }
+            jumpscare: {
+                soundId: "/assets/media/sounds/jumpscares/jumpscare2.mp3", 
+                image: "/assets/media/jumpscares/jumpscare2.png"
+            }
         },
         // backgroundImage: "/assets/media/Planets/planetB.png",
         backgroundImage: "/assets/media/Planets/luminousGrove.png"
@@ -64,10 +64,10 @@ const planets = [{
             title: "Ancient Ruins",
             description: "An ancient ruin with mysterious symbols.",
             film: "/assets/media/videos/C.mp4",
-            // jumpscare: {
-            //     soundId: "", 
-            //     image: "/assets/media/jumpscares/jumpscare1.png"
-            // }
+            jumpscare: {
+                soundId: "/assets/media/sounds/jumpscares/jumpscare3.mp3", 
+                image: "/assets/media/jumpscares/jumpscare4.png"
+            }
         },
         // backgroundImage: "/assets/media/Planets/planetC.png",
         backgroundImage: "/assets/media/Planets/crystalDunes.png"
@@ -86,10 +86,10 @@ const planets = [{
             title: "Frozen Lake",
             description: "A frozen lake that reflects other worlds.",
             film: "/assets/media/videos/D.mp4",
-            // jumpscare: {
-            //     soundId: "", 
-            //     image: "/assets/media/jumpscares/jumpscare1.png"
-            // }
+            jumpscare: {
+                soundId: "/assets/media/sounds/jumpscares/jumpscare4.mp3", 
+                image: "/assets/media/jumpscares/jumpscare5.png"
+            }
         },
         // backgroundImage: "/assets/media/Planets/planetD.png",
         backgroundImage: "/assets/media/Planets/celestialPeaks.png"
@@ -108,10 +108,10 @@ const planets = [{
             title: "Fiery Cave",
             description: "A fiery cave with a pulsating glow.",
             film: "/assets/media/videos/E.mp4",
-            // jumpscare: {
-            //     soundId: "", 
-            //     image: "/assets/media/jumpscares/jumpscare1.png"
-            // }
+            jumpscare: {
+                soundId: "/assets/media/sounds/jumpscares/jumpscare5.mp3", 
+                image: "/assets/media/jumpscares/jumpscare6.png"
+            }
         },
         // backgroundImage: "/assets/media/Planets/planetE.png",
         backgroundImage: "/assets/media/Planets/infernoHeart.png"
@@ -502,13 +502,15 @@ function visitHiddenSpot(){
 
 // ----------------------------------------------------- JUMP SCARE TRIGGER
 function triggerJumpscare() {
-
+    const planet = planets[currentPlanetIndex];
     const jumpScareSound = document.getElementById('jump-sound');
-    const jumpScareImagePath = '/assets/media/jumpscares/jumpscare1.png';
+    const jumpScareImagePath = planet.secretPlace.jumpscare.image; 
+    const jumpScareSoundPath = planet.secretPlace.jumpscare.soundId; 
 
-    if (jumpScareSound) {
-        jumpScareSound.currentTime = 0;
-        jumpScareSound.play();
+    if (jumpScareSoundPath) {
+        const audio = new Audio(jumpScareSoundPath);
+        audio.currentTime = 0;
+        audio.play();
     }
 
     // Create a fullscreen overlay for the jumpscare image
@@ -524,17 +526,20 @@ function triggerJumpscare() {
     jumpscareOverlay.style.opacity = '1';
 
     // Event listener to remove the jumpscare overlay when the sound ends
-    jumpScareSound.addEventListener('ended', () => {
-        jumpscareOverlay.style.opacity = '0';
-        // remove jumpsacre overlay after transition
-        jumpscareOverlay.addEventListener('transitionend', () => {
-            jumpscareOverlay.remove();
-        }, { once: true });
-    }, { once: true }); 
-
+    if (jumpScareSoundPath) {
+        jumpScareSound.addEventListener('ended', () => {
+            jumpscareOverlay.style.opacity = '0';
+            // remove jumpsacre overlay after transition
+            jumpscareOverlay.addEventListener('transitionend', () => {
+                jumpscareOverlay.remove();
+            }, { once: true });
+        }, { once: true }); 
+    
+    }
+    
     // Close jumpscare earlier 
     jumpscareOverlay.addEventListener('click', () => {
-        if (!jumpScareSound.paused) {
+        if (!jumpScareSound && !jumpScareSound.paused) {
             jumpScareSound.pause();
             jumpScareSound.currentTime = 0;
         }
