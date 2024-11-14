@@ -8,25 +8,25 @@ const planets = [{
         items: [{
                 id: 1,
                 name: "Oxygen Tank",
-                image: "/assets/media/objects/oxygenTank.png"
+                image: "assets/media/objects/oxygenTank.png"
             },
             {
                 id: 2,
                 name: "Water Purifier",
-                image: "/assets/media/objects/waterPurifier.png"
+                image: "assets/media/objects/waterPurifier.png"
             }
         ],
         alien: "Zorg",
         secretPlace: {
             title: "Eerie Cave",
             description: "An eerie cave emitting strange noises.",
-            film: "/assets/media/videos/A.mp4",
+            film: "assets/media/videos/A.mp4",
             jumpscare: {
-                soundId: "/assets/media/sounds/jumpscares/jumpscare1.mp3", 
-                image: "/assets/media/jumpscares/jumpscare1.png"
+                soundId: "assets/media/sounds/jumpscares/jumpscare1.mp3", 
+                image: "assets/media/jumpscares/jumpscare1.png"
             }
         },
-        backgroundImage: "/assets/media/Planets/whisperingStones.png"
+        backgroundImage: "assets/media/Planets/whisperingStones.png"
     },
     {
         name: "Luminous Grove",
@@ -35,16 +35,16 @@ const planets = [{
         items: [{
             id: 3,
             name: "Fuel",
-            image: "/assets/media/objects/fuel.png",
+            image: "assets/media/objects/fuel.png",
         }],
         alien: "Xylo",
         secretPlace: {
             title: "Whispering Waterfall",
             description: "A hidden waterfall that seems to whisper.",
-            film: "/assets/media/videos/B.mp4",
+            film: "assets/media/videos/B.mp4",
             jumpscare: {
-                soundId: "/assets/media/sounds/jumpscares/jumpscare2.mp3", 
-                image: "/assets/media/jumpscares/jumpscare2.png"
+                soundId: "assets/media/sounds/jumpscares/jumpscare2.mp3", 
+                image: "assets/media/jumpscares/jumpscare2.png"
             }
         },
         backgroundImage: "/assets/media/Planets/luminousGrove.png"
@@ -56,19 +56,19 @@ const planets = [{
         items: [{
             id: 4,
             name: "Space Map",
-            image: "/assets/media/objects/spaceMap.png",
+            image: "assets/media/objects/spaceMap.png",
         }],
         alien: "Quark",
         secretPlace: {
             title: "Ancient Ruins",
             description: "An ancient ruin with mysterious symbols.",
-            film: "/assets/media/videos/C.mp4",
+            film: "assets/media/videos/C.mp4",
             jumpscare: {
-                soundId: "/assets/media/sounds/jumpscares/jumpscare3.mp3", 
-                image: "/assets/media/jumpscares/jumpscare4.png"
+                soundId: "assets/media/sounds/jumpscares/jumpscare3.mp3", 
+                image: "assets/media/jumpscares/jumpscare4.png"
             }
         },
-        backgroundImage: "/assets/media/Planets/crystalDunes.png"
+        backgroundImage: "assets/media/Planets/crystalDunes.png"
     },
     {
         name: "Celestial Peaks",
@@ -77,41 +77,41 @@ const planets = [{
         items: [{
             id: 5,
             name: "Energy Crystal",
-            image: "/assets/media/objects/energyCrystal.png",
+            image: "assets/media/objects/energyCrystal.png",
         }],
         alien: "Frost",
         secretPlace: {
             title: "Frozen Lake",
             description: "A frozen lake that reflects other worlds.",
-            film: "/assets/media/videos/D.mp4",
+            film: "assets/media/videos/D.mp4",
             jumpscare: {
-                soundId: "/assets/media/sounds/jumpscares/jumpscare4.mp3", 
-                image: "/assets/media/jumpscares/jumpscare5.png"
+                soundId: "assets/media/sounds/jumpscares/jumpscare4.mp3", 
+                image: "assets/media/jumpscares/jumpscare5.png"
             }
         },
-        backgroundImage: "/assets/media/Planets/celestialPeaks.png"
+        backgroundImage: "assets/media/Planets/celestialPeaks.png"
     },
     {
         name: "Inferno's Heart",
         description: "Volcanic plains with rivers of lava.",
         story: "The lava flows are believed to be the veins of a sleeping giant, pulsating with the life force of the planet. The air is thick with the scent of sulfur and the heat radiates from the ground, creating an otherworldly atmosphere. Legends tell of a time when the giant awoke, reshaping the landscape and bringing forth new life. Explorers often seek the heart of the volcano, hoping to witness the raw power of nature and uncover the secrets buried beneath the molten rock.",
-        voiceover: "/assets/media/sounds/alienVoice.mp3",
+        voiceover: "assets/media/sounds/alienVoice.mp3",
         items: [{
             id: 6,
             name: "Heat Shield",
-            image: "/assets/media/objects/heatShield.png",
+            image: "assets/media/objects/heatShield.png",
         }],
         alien: "Blaze",
         secretPlace: {
             title: "Fiery Cave",
             description: "A fiery cave with a pulsating glow.",
-            film: "/assets/media/videos/E.mp4",
+            film: "assets/media/videos/E.mp4",
             jumpscare: {
-                soundId: "/assets/media/sounds/jumpscares/jumpscare5.mp3", 
-                image: "/assets/media/jumpscares/jumpscare6.png"
+                soundId: "assets/media/sounds/jumpscares/jumpscare5.mp3", 
+                image: "assets/media/jumpscares/jumpscare6.png"
             }
         },
-        backgroundImage: "/assets/media/Planets/infernoHeart.png"
+        backgroundImage: "assets/media/Planets/infernoHeart.png"
     }
 ];
 
