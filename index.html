@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Space Exploration Quest</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    <link rel="stylesheet" href="/assets/css/styles.css">
-    <script defer src="/assets/js/script.js"></script>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script defer src="assets/js/script.js"></script>
 </head>
 <body>
     <header>
         <h1>Space Exploration Quest</h1>
-        <button id="inventory-toggle-btn">Toggle Inventory</button>
+        <button id="inventory-toggle-btn" aria-label="Toggle Inventory">Toggle Inventory</button>
     </header>
     <main id="game-main"></main>
     <!-- Inventory Panel (Overlay) -->
-    <div id="inventory">
+    <div id="inventory" aria-hidden="true">
         <h2>Inventory</h2>
         <ul id="inventory-list">
         </ul>
     </div>
     <!-- Dialogue Overlay -->
-    <div id="dialogue-overlay" class="hidden">
+    <div id="dialogue-overlay" class="hidden" aria-hidden="true">
         <div id="dialogue-content">
             <p id="dialogue-text"></p>
             <button id="dialogue-close-btn">Close</button>
         </div>
     </div>
     <!-- Input Overlay for Player Name -->
-    <div id="input-overlay" class="hidden">
+    <div id="input-overlay" class="hidden" aria-hidden="true">
         <div id="input-content">
             <p>Welcome Human, please tell us your name before going forward.</p>
             <input type="text" id="player-name-input" placeholder="Enter your name" />

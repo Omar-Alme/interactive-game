@@ -137,7 +137,6 @@ const inventoryToggleBtn = document.getElementById('inventory-toggle-btn');
 const pickupSound = document.getElementById("pickup-sound");
 const travelSound = document.getElementById("travel-sound");
 const alienSound = document.getElementById("alien-sound");
-
 // Game Main
 const gameMain = document.getElementById('game-main');
 
@@ -606,6 +605,9 @@ function triggerEndScene() {
         endSceneOverlay.classList.add('visible');
     });    
 
-    localStorage.clear();
-    location.reload();
+    const endSceneCloseBtn = document.getElementById('endscene-close-btn');
+    endSceneCloseBtn.addEventListener('click', () => {
+        localStorage.clear();
+        location.reload();
+    });
 }
