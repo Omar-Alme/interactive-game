@@ -8,12 +8,12 @@ const planets = [{
         items: [{
                 id: 1,
                 name: "Oxygen Tank",
-                image: "assets/media/objects/oxygenTank.png"
+                image: "../media/objects/oxygenTank.png"
             },
             {
                 id: 2,
                 name: "Water Purifier",
-                image: "assets/media/objects/waterPurifier.png"
+                image: "../media/objects/waterPurifier.png"
             }
         ],
         alien: "Zorg",
