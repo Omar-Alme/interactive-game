@@ -8,12 +8,12 @@ const planets = [{
         items: [{
                 id: 1,
                 name: "Oxygen Tank",
-                image: "/assets/media/objects/oxygenTank.png"
+                image: "assets/media/Objects/oxygenTank.png"
             },
             {
                 id: 2,
                 name: "Water Purifier",
-                image: "/assets/media/objects/waterPurifier.png"
+                image: "assets/media/Objects/waterPurifier.png"
             }
         ],
         alien: "Zorg",
@@ -35,7 +35,7 @@ const planets = [{
         items: [{
             id: 3,
             name: "Fuel",
-            image: "assets/media/objects/fuel.png",
+            image: "assets/media/Objects/fuel.png",
         }],
         alien: "Xylo",
         secretPlace: {
@@ -56,7 +56,7 @@ const planets = [{
         items: [{
             id: 4,
             name: "Space Map",
-            image: "assets/media/objects/spaceMap.png",
+            image: "assets/media/Objects/spaceMap.png",
         }],
         alien: "Quark",
         secretPlace: {
@@ -77,7 +77,7 @@ const planets = [{
         items: [{
             id: 5,
             name: "Energy Crystal",
-            image: "assets/media/objects/energyCrystal.png",
+            image: "assets/media/Objects/energyCrystal.png",
         }],
         alien: "Frost",
         secretPlace: {
@@ -99,7 +99,7 @@ const planets = [{
         items: [{
             id: 6,
             name: "Heat Shield",
-            image: "assets/media/objects/heatShield.png",
+            image: "assets/media/Objects/heatShield.png",
         }],
         alien: "Blaze",
         secretPlace: {
